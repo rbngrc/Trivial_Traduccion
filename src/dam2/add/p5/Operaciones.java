@@ -6,6 +6,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -14,7 +18,7 @@ import jxl.Sheet;
 import jxl.Workbook;
 
 public class Operaciones {
-	
+	private static Logger log = Logger.getLogger(Operaciones.class);
 	OperacionesBaseDatos ops = new OperacionesBaseDatos();
 	String pathPDF = "ficheros/salida.pdf";
 	static int aciertos;
@@ -23,6 +27,8 @@ public class Operaciones {
 	Scanner sc = new Scanner(System.in);
 
 	public void jugar() {
+		PropertyConfigurator.configure("./properties/log4j.properties");
+		
 		aciertos = 0;
 		fallos = 0;
 
@@ -53,6 +59,7 @@ public class Operaciones {
 	}
 
 	public void anadirPreguntas() {
+		PropertyConfigurator.configure("./properties/log4j.properties");
 
 		ArrayList<Pregunta> listaPreguntas = new ArrayList<Pregunta>();
 
@@ -70,10 +77,13 @@ public class Operaciones {
 		Pregunta pregunta = new Pregunta(texto, respuesta1, respuesta2, respuesta3, correcta);
 		listaPreguntas.add(pregunta);
 
+		log.debug(pregunta);
+		
 		ops.insertarPreguntas(listaPreguntas);
 	}
 
 	public ArrayList<Pregunta> importarPreguntas() {
+		PropertyConfigurator.configure("./properties/log4j.properties");
 
 		ArrayList<Pregunta> listaPreguntas = new ArrayList<Pregunta>();
 
@@ -92,13 +102,14 @@ public class Operaciones {
 
 					Pregunta preg = new Pregunta(pregunta, respuesta1, respuesta2, respuesta3, correcta);
 					listaPreguntas.add(preg);
-
+					
+					log.debug(preg);
 				}
 
 				ops.insertarPreguntas(listaPreguntas);
 				System.out.println("Preguntas importadas con exito");
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error(e.toString());
 			}
 		} else {
 			System.out.println("No existe fichero para importar");
@@ -108,6 +119,7 @@ public class Operaciones {
 	}
 
 	public void verRecords() {
+		PropertyConfigurator.configure("./properties/log4j.properties");
 
 		ArrayList<Jugador> recordJugador = ops.leerRecord();
 
@@ -126,6 +138,7 @@ public class Operaciones {
 	}
 
 	public void instrucciones() {
+		
 		System.out.println("Bienvenido a trivial \nEl juego es muy sencillo.\n"
 				+ "Para jugar tienes que introducir la primera opcion en el menu.");
 		System.out.println("Se iran mostrando las preguntas con 3 respuestas. CUIDADO! solo una es la correcta");
@@ -138,6 +151,8 @@ public class Operaciones {
 	}
 
 	public void generarPDF(int aciertos, int fallos) {
+		PropertyConfigurator.configure("./properties/log4j.properties");
+		
 		double puntuacion = (aciertos * 5) - (fallos * 0.5);
 
 		PdfWriter writer = null;
@@ -163,16 +178,18 @@ public class Operaciones {
 				File rutaPDF = new File(pathPDF);
 				Desktop.getDesktop().open(rutaPDF);
 			} catch (IOException e) {
-				e.printStackTrace();
+				log.error(e.toString());
 			}
 
 		} catch (Exception e) {
-			e.getMessage();
+			log.error(e.toString());
 		}
 
 	}
 
 	public int respuestaCorrecta() {
+		PropertyConfigurator.configure("./properties/log4j.properties");
+		
 		System.out.println("Respuesta CORRECTA");
 		aciertos++;
 		if (aciertos == 1) {
@@ -181,10 +198,11 @@ public class Operaciones {
 			System.out.println("Llevas: " + aciertos + " aciertos");
 		}
 		return aciertos;
-
 	}
 
 	public int respuestaIncorrecta() {
+		PropertyConfigurator.configure("./properties/log4j.properties");
+		
 		System.out.println("Respuesta INCORRECTA");
 		fallos++;
 		if (fallos == 1) {
@@ -196,6 +214,7 @@ public class Operaciones {
 	}
 
 	public void anadirRecord() {
+		PropertyConfigurator.configure("./properties/log4j.properties");
 
 		ArrayList<Jugador> recordJugador = new ArrayList<Jugador>();
 

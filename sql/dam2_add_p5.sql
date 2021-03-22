@@ -18,10 +18,10 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `juego`
+-- Base de datos: `dam2_add_p5`
 --
-CREATE DATABASE IF NOT EXISTS `juego` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `juego`;
+CREATE DATABASE IF NOT EXISTS `dam2_add_p5` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `dam2_add_p5`;
 
 -- --------------------------------------------------------
 

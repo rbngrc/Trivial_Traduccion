@@ -8,10 +8,10 @@ import java.util.ResourceBundle;
 import java.util.Scanner;
 
 public class Menu {
-	
+
 	private static Connection conexion;
 	private static Statement st;
-	
+
 	public void Menu(ResourceBundle rb) throws SQLException {
 		Scanner sc = new Scanner(System.in);
 		Operaciones operacion = new Operaciones();
@@ -21,7 +21,7 @@ public class Menu {
 
 		conexion = ConexionBaseDatos.getConexion();
 		st = conexion.createStatement();
-		
+
 		while (!salir) {
 
 			System.out.println("MENU");
@@ -72,5 +72,4 @@ public class Menu {
 			}
 		}
 	}
-
 }

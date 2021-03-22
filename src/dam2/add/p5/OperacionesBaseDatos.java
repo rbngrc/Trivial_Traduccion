@@ -5,7 +5,12 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+
 public class OperacionesBaseDatos {
+	private static Logger log = Logger.getLogger(OperacionesBaseDatos.class);
+	
 	private static Connection conexion;
 	private static Statement st;
 
@@ -13,7 +18,8 @@ public class OperacionesBaseDatos {
 	ArrayList<Jugador> recordJugador = new ArrayList<Jugador>();
 
 	public ArrayList<Pregunta> leerPreguntas() {
-
+		PropertyConfigurator.configure("./properties/log4j.properties");
+		
 		conexion = ConexionBaseDatos.getConexion();
 
 		try {
@@ -33,13 +39,14 @@ public class OperacionesBaseDatos {
 				listaPreguntas.add(preg);
 			}
 		} catch (Exception e) {
-			System.out.println(e);
+			log.error(e.toString());
 		}
 
 		return listaPreguntas;
 	}
 
 	public void insertarPreguntas(ArrayList<Pregunta> lista_preguntas) {
+		PropertyConfigurator.configure("./properties/log4j.properties");
 
 		conexion = ConexionBaseDatos.getConexion();
 
@@ -58,6 +65,8 @@ public class OperacionesBaseDatos {
 						+ "VALUES ('" + texto + "', '" + respuesta1 + "',  '" + respuesta2 + "', '" + respuesta3
 						+ "', '" + correcta + "');";
 
+				log.debug(query);
+				
 				int resultado = st.executeUpdate(query);
 
 				if (resultado == 0) {
@@ -67,11 +76,12 @@ public class OperacionesBaseDatos {
 			}
 
 		} catch (Exception e) {
-			System.out.println(e);
+			log.error(e.toString());
 		}
 	}
 
 	public ArrayList<Jugador> leerRecord() {
+		PropertyConfigurator.configure("./properties/log4j.properties");
 
 		conexion = ConexionBaseDatos.getConexion();
 
@@ -91,7 +101,7 @@ public class OperacionesBaseDatos {
 				recordJugador.add(jugador);
 			}
 		} catch (Exception e) {
-			System.out.println(e);
+			log.error(e.toString());
 		}
 
 		return recordJugador;
@@ -99,6 +109,7 @@ public class OperacionesBaseDatos {
 	}
 
 	public void insertarRecord(ArrayList<Jugador> recordJugador) {
+		PropertyConfigurator.configure("./properties/log4j.properties");
 
 		conexion = ConexionBaseDatos.getConexion();
 
@@ -115,6 +126,8 @@ public class OperacionesBaseDatos {
 				String query = "INSERT INTO records (nombre, aciertos, fallos, puntuacion) " + "VALUES ('" + nombre
 						+ "', '" + aciertos + "',  '" + fallos + "', '" + puntuacion + "');";
 
+				log.debug(query);
+				
 				int resultado = st.executeUpdate(query);
 
 				if (resultado == 0) {
@@ -124,11 +137,13 @@ public class OperacionesBaseDatos {
 			}
 
 		} catch (Exception e) {
-			System.out.println(e);
+			log.error(e.toString());
 		}
 	}
 
 	public boolean comprobarRecord(String nombre) {
+		PropertyConfigurator.configure("./properties/log4j.properties");
+		
 		OperacionesBaseDatos ops = new OperacionesBaseDatos();
 		ArrayList<Jugador> recordsGuardados = ops.leerRecord();
 
@@ -142,12 +157,14 @@ public class OperacionesBaseDatos {
 				resultado = true;
 			}
 		}
-
+		log.debug(resultado);
 		return resultado;
 
 	}
 
 	public boolean comprobarPuntuacion(String nombre, double puntuacion) {
+		PropertyConfigurator.configure("./properties/log4j.properties");
+		
 		OperacionesBaseDatos ops = new OperacionesBaseDatos();
 		ArrayList<Jugador> recordsGuardados = ops.leerRecord();
 
@@ -168,10 +185,13 @@ public class OperacionesBaseDatos {
 				}
 			}
 		}
+		log.debug(resultado);
 		return resultado;
 	}
 
 	public void actualizarRecord(ArrayList<Jugador> recordJugador) {
+		PropertyConfigurator.configure("./properties/log4j.properties");
+		
 		conexion = ConexionBaseDatos.getConexion();
 
 		try {
@@ -186,7 +206,9 @@ public class OperacionesBaseDatos {
 
 				String query = "update records set aciertos = '" + aciertos + "', fallos = '" + fallos
 						+ "', puntuacion = '" + puntuacion + "' where nombre = '" + nombre + "';";
-
+				
+				log.debug(query);
+				
 				int resultado = st.executeUpdate(query);
 
 				if (resultado == 0) {
@@ -196,7 +218,7 @@ public class OperacionesBaseDatos {
 			}
 
 		} catch (Exception e) {
-			System.out.println(e);
+			log.error(e.toString());
 		}
 	}
 }
